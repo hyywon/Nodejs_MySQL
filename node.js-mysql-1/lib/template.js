@@ -9,6 +9,7 @@ module.exports = {
     </head>
     <body>
       <h1><a href="/">WEB</a></h1>
+      <a href="/author">author</a>
       ${list}
       ${control}
       ${body}
@@ -24,20 +25,39 @@ module.exports = {
     }
     list = list + '</ul>';
     return list;
-  }, authorSelect: function (authors,author_id) {
+  }, authorSelect: function (authors, author_id) {
     var tag = '';
     var i = 0;
-    while (i < authors.length) {    
+    while (i < authors.length) {
       var selected = '';
-      if( authors[i].id === author_id){
+      if (authors[i].id === author_id) {
         selected = 'selected';
       }
       tag = tag + `<option value="${authors[i].id}"${selected}>${authors[i].name}</option>`
       i++;
     }
-    return`
+    return `
       <p><select name="author">
         ${tag}
       </select></p>`
+  }, authortable: function (authors) {
+    var tag = '<table>';
+    var i = 0;
+    while (i < authors.length) {
+      tag += `
+            <tr>
+                <td>${authors[i].name}</td>
+                <td>${authors[i].profile}</td>
+                <td><a href="/author/update?id=${authors[i].id}">update</a></td>
+                <td>                
+                <form action="/author/delete" method="post">
+                <input type="hidden" name="id" value="${authors[i].id}">
+                <input type="submit" value="delete">
+                </form></td>
+            </tr>`
+      i++;
+    }
+    tag += '</table>';
+    return tag;
   }
 }

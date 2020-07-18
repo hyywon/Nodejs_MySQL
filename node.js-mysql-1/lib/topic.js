@@ -114,20 +114,15 @@ exports.update = function (request, response) {
         if (error) {
             throw error;
         }
-        db.query(`SELECT * FROM topic WHERE id =?`,
-            [queryData.id], function (error2, topic) {
-                if (error2) {
-                    throw error2;
-                }
-                db.query(`SELECT * FROM author`, function (error3, authors) {
-                    if (error3) {
-                        throw (error3);
-                    }
-                    var title = 'Update';
-                    //filelist 가 아닌 topics를 가져올 것 임 
-                    var list = template.list(topics);
-                    var html = template.HTML(topic[0].title, list,
-                        `  <form action="/update_process" method="post">
+        db.query(`SELECT * FROM author`, function (error3, authors) {
+            if (error3) {
+                throw (error3);
+            }
+            var title = 'Update';
+            //filelist 가 아닌 topics를 가져올 것 임 
+            var list = template.list(topics);
+            var html = template.HTML(topic[0].title, list,
+                `  <form action="/update_process" method="post">
                 <input type="hidden" name="id" value="${topic[0].id}">
                 <p><input type="text" name="title" placeholder="title" value="${topic[0].title}"></p>
                 <p>
@@ -139,12 +134,11 @@ exports.update = function (request, response) {
                 </p>
               </form>
             `,
-                        `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
-                    );
-                    response.writeHead(200);
-                    response.end(html);
-                })
-            });
+                `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`
+            );
+            response.writeHead(200);
+            response.end(html);
+        });
     });
 }
 
